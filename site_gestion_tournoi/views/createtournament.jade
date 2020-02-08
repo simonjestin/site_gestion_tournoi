@@ -1,0 +1,43 @@
+extends layout
+
+block content
+     
+    h1 Nouveau tournoi
+    .boite
+        div
+            form#formAddTournament(name="addtournament",method="post",action="/addtournament")
+                label(for="inputNameOfTournament") Nom du tournoi =
+                input#inputNameOfTournament(type="text", placeholder="Nom", name="nametournament")
+                br
+
+        div 
+            p Type de tournoi
+                .centre
+                    input#groupsAndElimination(type="radio",name="typetournament",value=0, checked="checked")
+                    label(for="groupsAndElimination") Groupes et élimination
+                    br
+                    input#directElimination(type="radio",name="typetournament",value=1)
+                    label(for="directElimination") Tableau à élimination directe
+                    br
+                    input#championship(type="radio",name="typetournament",value=2)
+                    label(for="championship") Championnat
+                    br
+            br
+
+        div
+            label(for="selectSports") Sports = 
+            select#selectSports(name='sports')
+                each sports, i in sportsList
+                    option(value=i) #{sports}
+            br
+            br
+
+        div
+            input#manageOnline(type="radio",name="pdf",value=0, checked="checked")
+            label(for="manageOnline") Gérer le tournoi en ligne
+            input#generatePdf(type="radio",name="pdf",value=1)
+            label(for="generatePdf") Générer un tableau pdf
+            br
+            br
+    p
+        button#buttonSubmit.button(type="Submit", class="bouton") Créer tournoi

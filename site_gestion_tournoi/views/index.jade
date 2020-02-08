@@ -1,0 +1,23 @@
+extends layout
+head
+    title Tournoi
+block content
+  
+  body
+
+  h1 Générateur de tournois
+  
+    h2 Générez vos tournois en un click !
+
+  p
+    style="text-align:center"
+    img(src='/images/tableau.png', alt='Tableau', class="image")
+
+  .bouton-aligne
+    form#formRedirectToTeams(name="redirectteams",method="get",action="/teams")
+      button#redirectToTeams.button(type="image" class="bouton") Ajouter des concurrents
+  .bouton-aligne  
+    form#formRedirectToTeams(name="redirecttournament",method="get",action="/tournament")
+      button#redirectToTeams.button(type="image" class="bouton") Nouveau tournoi
+
+  

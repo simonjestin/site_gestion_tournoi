@@ -1,0 +1,52 @@
+extends layout
+
+block content
+     
+    h1 Ajouter les concurrents/équipes
+
+    input#inputNumberOfTeams(type="number", placeholder="Nombre de concurrents/équipes", name="nb_teams", onChange="addFields()")
+    br
+    br
+    form#formAddUser(name="addteams",method="post",action="/addteams")
+
+    script(type='text/javascript').
+        function addFields(){
+            // Number of inputs to create
+            var numberOfTeams = document.getElementById("inputNumberOfTeams").value;
+
+            var form = document.getElementById("formAddUser");
+            // Clear previous contents of the form
+            while (form.hasChildNodes()) {
+                form.removeChild(form.lastChild);
+            }
+
+            //Add number of teams
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "nbteams";
+            input.value = numberOfTeams;
+            form.appendChild(input);
+
+            if (numberOfTeams%4 == 0) {
+                for (i=0;i<numberOfTeams;i++){
+                    // Append a node with a text
+                    form.appendChild(document.createTextNode("Concurrent/équipe " + (i+1) + " =  "));
+                    // Create an <input> element, set its type and name attributes
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.name = "teams";
+                    input.required = "required";
+                    form.appendChild(input);
+                    // Append a line break 
+                    form.appendChild(document.createElement("br"));
+                }
+                var button = document.createElement("button");
+                button.type = "submit";
+                button.innerHTML  = "Valider";
+                form.appendChild(button);
+            }
+            else 
+            {
+                alert("Le nombre de concurrent/équipe doit être un multiple de 4");
+            }
+        }

@@ -1,0 +1,27 @@
+{
+  "name": "site_gestion_tournoi",
+  "version": "1.0.0",
+  "description": "Projet de site internet permettant la gestion de tournoi quelconque en ligne",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonjestin/site_gestion_tournoi.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "web",
+    "projet"
+  ],
+  "author": "Adrien Boulaire, Simon Jestin, Guillaume Le Maitre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simonjestin/site_gestion_tournoi/issues"
+  },
+  "homepage": "https://github.com/simonjestin/site_gestion_tournoi#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
