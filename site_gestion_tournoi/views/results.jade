@@ -1,0 +1,70 @@
+extends layout
+
+block content
+
+    h1= nameTournament   
+    h2  
+        ul
+            il 
+                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Ajouter les concurrents/équipes
+            il 
+                a(href="/results?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Calendrier / Résultats
+            il 
+                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Classements   
+
+    input#inputGroup(type="radio" name="typetournament",value=1, checked="checked")
+    label(for="inputGroup") Groupe
+    br
+    input#inputArray(type="radio" name="typetournament",value=2)
+    label(for="inputArray") Tableau
+    br
+
+    div#divGroups
+
+    script(type='text/javascript').
+        window.onload = function(){
+            var isGroup = document.getElementById("inputGroup");
+            var isArray = document.getElementById("inputArray");
+            var groups = document.getElementById("divGroups");
+
+            var matchs = JSON.parse('!{matchs}');
+
+            if (isGroup.checked)
+            {
+                var nbGroup = JSON.parse('!{nbGroup}');
+
+                for (var i = 1; i <= nbGroup; i++)
+                {
+                    var div = document.createElement("div");
+                    if (i%2 == 0) div.setAttribute("style", "position: relative; left: 0;display: inline-block;");
+                    else div.setAttribute("style", "position: relative; right: 0;display: inline-block;");
+                    var h3 = document.createElement("h3");
+                    h3.appendChild(document.createTextNode("Groupe n°" + i));
+                    div.appendChild(h3);
+                    matchs.forEach(m => {
+                        if (m.group == i)
+                        {
+                            var p = document.createElement("p");
+                            var text = document.createTextNode(getTeamName(m.id_team1) + " " + m.goal_team1 + " - " + m.goal_team2 + " " + getTeamName(m.id_team2));
+                            p.appendChild(text);
+                            div.appendChild(p);
+                        }
+                    })
+                    groups.appendChild(div);
+                }
+            }
+        }
+
+        function getTeamName(id){
+            var teams = JSON.parse('!{teams}');
+            var result = "";
+            teams.forEach(t =>{
+                console.log(t.name + " => "+t._id + " = "+ id);
+                if(t._id === id) 
+                {
+                    console.log(t.name);
+                    result = t.name;
+                }
+            });
+            return result;
+        }

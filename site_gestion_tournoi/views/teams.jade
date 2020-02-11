@@ -3,10 +3,16 @@ extends layout
 block content
 
     h1= nameTournament     
-    h2 Ajouter les concurrents/équipes
+    h2  
+        ul
+            il 
+                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Ajouter les concurrents/équipes
+            il 
+                a(href="/results?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Calendrier / Résultats
+            il 
+                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Classements   
 
-    input#inputNumberOfTeams(type="number", placeholder="Nombre de concurrents/équipes", name="nb_teams", onChange="addFields()")
-    input#inputIdTournament(type="number", value= idTournament, name="idTournament", hidden = true)
+    input#inputNumberOfTeams(type="number", placeholder="Nombre de concurrents/équipes", name="nb_teams", onChange="addFields()", onKeyDown="addFields()")
     
     br
     br
@@ -15,8 +21,8 @@ block content
     script(type='text/javascript').
         function addFields(){
             // Number of inputs to create
-            var numberOfTeams = document.getElementById("inputNumberOfTeams").value;
-            var idTournament = document.getElementById("inputIdTournament").value;
+            var numberOfTeams =document.getElementById("inputNumberOfTeams").value;
+            var idTournament =JSON.parse('!{idTournament}');
 
             var form = document.getElementById("formAddUser");
             // Clear previous contents of the form
