@@ -1,10 +1,13 @@
 extends layout
 
 block content
-     
-    h1 Ajouter les concurrents/équipes
+
+    h1= nameTournament     
+    h2 Ajouter les concurrents/équipes
 
     input#inputNumberOfTeams(type="number", placeholder="Nombre de concurrents/équipes", name="nb_teams", onChange="addFields()")
+    input#inputIdTournament(type="number", value= idTournament, name="idTournament", hidden = true)
+    
     br
     br
     form#formAddUser(name="addteams",method="post",action="/addteams")
@@ -13,12 +16,20 @@ block content
         function addFields(){
             // Number of inputs to create
             var numberOfTeams = document.getElementById("inputNumberOfTeams").value;
+            var idTournament = document.getElementById("inputIdTournament").value;
 
             var form = document.getElementById("formAddUser");
             // Clear previous contents of the form
             while (form.hasChildNodes()) {
                 form.removeChild(form.lastChild);
             }
+
+            //Add id of tournament
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "idtournament";
+            input.value = idTournament;
+            form.appendChild(input);
 
             //Add number of teams
             var input = document.createElement("input");

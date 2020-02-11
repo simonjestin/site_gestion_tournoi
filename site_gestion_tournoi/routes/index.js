@@ -13,7 +13,11 @@ router.get('/helloworld', function (req, res) {
 
 /* GET creating teams page. */
 router.get('/teams', function (req, res) {
-  res.render('teams')
+  console.log(req.query.idTournament);
+  res.render('teams',{
+    nameTournament: req.query.nameTournament,
+    idTournament: req.query.idTournament
+  })
 });
 
 /* GET creating tournament page. */
@@ -47,8 +51,9 @@ router.post('/addtournament', function (req, res) {
         res.send("Problème lors de la création d'un tournoi");
       }
       else {
-        res.location("/");
-        res.redirect("/");
+        var id = list.length+1;
+        var params = "idTournament=" + id + "&nameTournament=" + req.body.nametournament;
+        res.redirect("/teams?" + params);
       }
     });
   });
@@ -60,28 +65,31 @@ router.post('/addteams', function (req, res) {
   var i = 0;
   var teamsToAdd = [];
 
-  req.body.teams.forEach(element => {
-    i++;
-    teamsToAdd.push({
-      "_id": i,
-      "id_tournament": 1,
-      "name": element,
-      "nb_win": 0,
-      "nb_draw": 0,
-      "nb_lost": 0
-    })
-  });
-  console.log(teamsToAdd);
+  dbTeams.find({},{},function(e,list){
+    i = list.length;
+    req.body.teams.forEach(element => {
+      i++;
+      teamsToAdd.push({
+        "_id": i,
+        "id_tournament": req.body.idtournament,
+        "name": element,
+        "nb_win": 0,
+        "nb_draw": 0,
+        "nb_lost": 0
+      })
+    });
 
-  dbTeams.drop();
-  dbTeams.insert(teamsToAdd, function (err, doc) {
-    if (err) {
-      res.send("Problème lors de l'ajout d'une équipe");
-    }
-    else {
-      res.location("/");
-      res.redirect("/");
-    }
+    console.log(teamsToAdd);
+
+    dbTeams.insert(teamsToAdd, function (err, doc) {
+      if (err) {
+        res.send("Problème lors de l'ajout d'une équipe");
+      }
+      else {
+        res.location("/");
+        res.redirect("/");
+      }
+    });
   });
 });
 

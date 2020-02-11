@@ -67,6 +67,8 @@ margin: 20px;
   width:200px;
   height:50px;
   color:white;
+  margin-left: 40%;
+  text-align:center;
 }
 .button:hover
 {
