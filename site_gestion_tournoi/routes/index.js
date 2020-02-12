@@ -19,26 +19,6 @@ router.get('/teams', function(req, res) {
     })
 });
 
-/* GET creating teams page. */
-router.get('/results', function(req, res) {
-    var db = req.db;
-    var dbTeams = db.get("teams");
-    var dbMatchs = db.get("matchs");
-
-    dbTeams.find({ id_tournament: req.query.idTournament }, {}, function(e, teams) {
-        console.log("teams = " + teams);
-        dbMatchs.find({ id_tournament: req.query.idTournament }, {}, function(e, matchs) {
-            res.render('results', {
-                nameTournament: req.query.nameTournament,
-                idTournament: req.query.idTournament,
-                nbGroup: teams.length / 4,
-                matchs: JSON.stringify(matchs),
-                teams: JSON.stringify(teams)
-            });
-        });
-    });
-});
-
 /* GET creating tournament page. */
 router.get('/tournament', function(req, res) {
     var sportsList = ["Football", "Handball"];
@@ -95,7 +75,8 @@ router.post('/addteams', function(req, res) {
                 "nb_win": 0,
                 "nb_draw": 0,
                 "nb_lost": 0,
-                "points": 0,
+                "goals_scored": 0,
+                "goals_conceded": 0,
                 "group": Math.ceil(i / 4)
             })
         });
@@ -105,8 +86,8 @@ router.post('/addteams', function(req, res) {
                 res.send("Problème lors de l'ajout d'une équipe");
             } else {
                 createMatch(req, teamsToAdd);
-                res.location("/");
-                res.redirect("/");
+                var params = "idTournament=" + req.body.idtournament + "&nameTournament=" + req.body.nametournament;
+                res.redirect("/result?" + params);
             }
         });
     });
@@ -129,7 +110,8 @@ async function createMatch(req, teams) {
                                 "id_tournament": team1.id_tournament,
                                 "group": team1.group,
                                 "goal_team1": 0,
-                                "goal_team2": 0
+                                "goal_team2": 0,
+                                "finish": false
                             });
                         }
                     }

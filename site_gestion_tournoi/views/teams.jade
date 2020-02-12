@@ -10,7 +10,7 @@ block content
             il 
                 a(href="/results?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Calendrier / Résultats
             il 
-                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Classements   
+                a(href="/ranking?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Classements   
 
     input#inputNumberOfTeams(type="number", placeholder="Nombre de concurrents/équipes", name="nb_teams", onChange="addFields()", onKeyDown="addFields()")
     
@@ -35,6 +35,13 @@ block content
             input.type = "hidden";
             input.name = "idtournament";
             input.value = idTournament;
+            form.appendChild(input);
+
+            //Add name of tournament
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "nametournament";
+            input.value = nameTournament;
             form.appendChild(input);
 
             //Add number of teams

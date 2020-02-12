@@ -10,7 +10,7 @@ block content
             il 
                 a(href="/results?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Calendrier / Résultats
             il 
-                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Classements   
+                a(href="/ranking?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Classements   
 
     input#inputGroup(type="radio" name="typetournament",value=1, checked="checked")
     label(for="inputGroup") Groupe
@@ -44,14 +44,86 @@ block content
                     matchs.forEach(m => {
                         if (m.group == i)
                         {
-                            var p = document.createElement("p");
-                            var text = document.createTextNode(getTeamName(m.id_team1) + " " + m.goal_team1 + " - " + m.goal_team2 + " " + getTeamName(m.id_team2));
-                            p.appendChild(text);
-                            div.appendChild(p);
+                            var inputTeam1 = document.createElement("input");
+                            inputTeam1.type = "number";
+                            inputTeam1.id = m._id + "*team1";
+                            inputTeam1.setAttribute("style", "width: 25px;");
+                            inputTeam1.value = m.goal_team1;
+                            inputTeam1.onchange = function(){changeScore(inputTeam1.id);};
+                            
+                            var inputTeam2 = document.createElement("input");
+                            inputTeam2.type = "number";
+                            inputTeam2.id = m._id + "*team2";
+                            inputTeam2.setAttribute("style", "width: 25px;");
+                            inputTeam2.value = m.goal_team2;
+                            inputTeam2.onchange = function(){changeScore(inputTeam2.id);};
+             
+                            var text1 = document.createTextNode(getTeamName(m.id_team1) + " ");
+                            var text2 = document.createTextNode(" - ");
+                            var text3 = document.createTextNode(" " + getTeamName(m.id_team2) + "  ");
+
+                            var button = document.createElement("button");
+                            button.id = m._id;  
+                            button.appendChild(document.createTextNode("Terminé"));
+                            button.onclick = function(){endMatch(m._id);};
+
+                            div.appendChild(text1);
+                            div.appendChild(inputTeam1);
+                            div.appendChild(text2);
+                            div.appendChild(inputTeam2);
+                            div.appendChild(text3);
+                            if (!m.finish) div.appendChild(button);
+                            div.appendChild(document.createElement("br"));
                         }
-                    })
+                    });
                     groups.appendChild(div);
                 }
+            }
+        }
+
+        function endMatch(id){
+            var button = document.getElementById(id);
+            button.style.visibility = "hidden";
+
+            var input1 = document.getElementById(id + "*team1");
+            var input2 = document.getElementById(id + "*team2");
+            input1.readOnly = true;
+            input2.readOnly = true;
+            
+            var xhr = new XMLHttpRequest();
+            var data = JSON.stringify(
+                {
+                    "idTournament": JSON.parse('!{idTournament}'),
+                    "nameTournament": JSON.parse('!{nameTournament}'),
+                    "id_match": id
+                }
+            );
+            xhr.open('POST','/results');
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.send(data);
+        }
+
+        function changeScore(id){
+            var input = document.getElementById(id);
+            if (input.value >= 0)
+            {
+                var xhr = new XMLHttpRequest();
+                var data = JSON.stringify(
+                    {
+                        "id":id,
+                        "value":input.value,
+                        "idTournament": JSON.parse('!{idTournament}'),
+                        "nameTournament": JSON.parse('!{nameTournament}')
+                    }
+                );
+                xhr.open('PUT','/results');
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send(data);
+            }
+            else 
+            {
+                input.value = 0;   
+                alert("Le score doit être positif ou nul !");
             }
         }
 
@@ -59,10 +131,8 @@ block content
             var teams = JSON.parse('!{teams}');
             var result = "";
             teams.forEach(t =>{
-                console.log(t.name + " => "+t._id + " = "+ id);
                 if(t._id === id) 
                 {
-                    console.log(t.name);
                     result = t.name;
                 }
             });
