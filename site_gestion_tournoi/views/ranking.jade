@@ -10,17 +10,20 @@ block content
             il 
                 a(href="/results?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Calendrier / Résultats
             il 
-                a(href="/ranking?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Classements   
+                a(href="/ranking?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Classements     
 
     div#divGroups
+
+    input#nameTournament(type="text", name="nameTournament", value=nameTournament, hidden = "hidden")
+    input#idTournament(type="number", name="idTournament", value=idTournament, hidden = "hidden")
 
     script(type='text/javascript').
         window.onload = function(){
             var groups = document.getElementById("divGroups");
+            var idTournament =document.getElementById("idTournament").value;
+            var nameTournament = document.getElementById("nameTournament").value;
 
-            var matchs = JSON.parse('!{matchs}');
             var teams = JSON.parse('!{teams}');
-
             var nbGroup = JSON.parse('!{nbGroup}');
 
             for (var i = 1; i <= nbGroup; i++)
@@ -43,52 +46,6 @@ block content
                 groups.appendChild(div);
             }
 
-        }
-
-        function endMatch(id){
-            var button = document.getElementById(id);
-            button.style.visibility = "hidden";
-
-            var input1 = document.getElementById(id + "*team1");
-            var input2 = document.getElementById(id + "*team2");
-            input1.readOnly = true;
-            input2.readOnly = true;
-
-            var xhr = new XMLHttpRequest();
-            var data = JSON.stringify(
-                {
-                    "idTournament": JSON.parse('!{idTournament}'),
-                    "nameTournament": JSON.parse('!{nameTournament}'),
-                    "id_match": id
-                }
-            );
-            xhr.open('POST','/results');
-            xhr.setRequestHeader("Content-type", "application/json");
-            xhr.send(data);
-        }
-
-        function changeScore(id){
-            var input = document.getElementById(id);
-            if (input.value >= 0)
-            {
-                var xhr = new XMLHttpRequest();
-                var data = JSON.stringify(
-                    {
-                        "id":id,
-                        "value":input.value,
-                        "idTournament": JSON.parse('!{idTournament}'),
-                        "nameTournament": JSON.parse('!{nameTournament}')
-                    }
-                );
-                xhr.open('PUT','/results');
-                xhr.setRequestHeader("Content-type", "application/json");
-                xhr.send(data);
-            }
-            else 
-            {
-                input.value = 0;   
-                alert("Le score doit être positif ou nul !");
-            }
         }
 
         function getTeamName(id){

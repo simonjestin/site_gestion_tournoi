@@ -4,6 +4,7 @@ var router = express.Router();
 
 /* GET creating teams page. */
 router.get('/', function(req, res) {
+    console.log("result" + req.query.nameTournament);
     var db = req.db;
     var dbTeams = db.get("teams");
     var dbMatchs = db.get("matchs");
@@ -11,8 +12,8 @@ router.get('/', function(req, res) {
     dbTeams.find({ id_tournament: req.query.idTournament }, {}, function(e, teams) {
         dbMatchs.find({ id_tournament: req.query.idTournament }, {}, function(e, matchs) {
             res.render('results', {
-                nameTournament: JSON.stringify(req.query.nameTournament),
-                idTournament: JSON.stringify(req.query.idTournament),
+                nameTournament: req.query.nameTournament,
+                idTournament: req.query.idTournament,
                 nbGroup: JSON.stringify(teams.length / 4),
                 matchs: JSON.stringify(matchs),
                 teams: JSON.stringify(teams)
@@ -134,8 +135,8 @@ router.post('/', function(req, res) {
         dbTeams.find({ id_tournament: req.body.idTournament }, {}, function(e, teams) {
             dbMatchs.find({ id_tournament: req.body.idTournament }, {}, function(e, matchs) {
                 res.render('results', {
-                    nameTournament: JSON.stringify(req.body.nameTournament),
-                    idTournament: JSON.stringify(req.body.idTournament),
+                    nameTournament: req.body.nameTournament,
+                    idTournament: req.body.idTournament,
                     nbGroup: JSON.stringify(teams.length / 4),
                     matchs: JSON.stringify(matchs),
                     teams: JSON.stringify(teams)
@@ -172,8 +173,8 @@ router.put('/', function(req, res) {
         dbTeams.find({ id_tournament: req.body.idTournament }, {}, function(e, teams) {
             dbMatchs.find({ id_tournament: req.body.idTournament }, {}, function(e, matchs) {
                 res.render('results', {
-                    nameTournament: JSON.stringify(req.body.nameTournament),
-                    idTournament: JSON.stringify(req.body.idTournament),
+                    nameTournament: req.body.nameTournament,
+                    idTournament: req.body.idTournament,
                     nbGroup: JSON.stringify(teams.length / 4),
                     matchs: JSON.stringify(matchs),
                     teams: JSON.stringify(teams)

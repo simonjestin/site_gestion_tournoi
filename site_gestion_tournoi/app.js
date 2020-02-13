@@ -8,9 +8,10 @@ var monk = require('monk');
 var db = monk('localhost:27017/gestion_tournoi')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var teamsRouter = require('./routes/teams');
 var resultsRouter = require('./routes/results');
 var rankingRouter = require('./routes/ranking');
+var tournamentRouter = require('./routes/tournament');
 
 var app = express();
 
@@ -30,9 +31,10 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/results', resultsRouter);
 app.use('/ranking', rankingRouter);
+app.use('/teams', teamsRouter);
+app.use('/tournament', tournamentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

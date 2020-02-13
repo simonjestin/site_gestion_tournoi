@@ -15,15 +15,47 @@ block content
     input#inputNumberOfTeams(type="number", placeholder="Nombre de concurrents/équipes", name="nb_teams", onChange="addFields()", onKeyDown="addFields()")
     
     br
-    br
-    form#formAddUser(name="addteams",method="post",action="/addteams")
+    br 
+    form#formAddUser(name="addteams",method="post",action="/teams")
+
+    input#nameTournament(type="text", name="nameTournament", value=nameTournament, hidden = "hidden")
+    input#idTournament(type="number", name="idTournament", value=idTournament, hidden = "hidden")
+    input#isCreated(type="text", name="isCreated", value=isCreated, hidden = "hidden")
 
     script(type='text/javascript').
+
+        window.onload = function()
+        {
+            var isCreated = document.getElementById("isCreated").value;
+            var inputNumberOfTeams = document.getElementById("inputNumberOfTeams");
+            var form = document.getElementById("formAddUser");
+            var teams = JSON.parse('!{teams}');
+
+            if(isCreated == 1) 
+            {
+                inputNumberOfTeams.hidden = "hidden";
+                for (i=0;i<teams.length;i++){
+                    // Append a node with a text
+                    form.appendChild(document.createTextNode("Concurrent/équipe " + (i+1) + " =  "));
+                    // Create an <input> element, set its type and name attributes
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.name = "teams";
+                    input.value = teams[i].name;
+                    input.readOnly = true;
+                    form.appendChild(input);
+                    // Append a line break 
+                    form.appendChild(document.createElement("br"));
+                }
+            }
+        }
+        
         function addFields(){
             // Number of inputs to create
             var numberOfTeams =document.getElementById("inputNumberOfTeams").value;
-            var idTournament =JSON.parse('!{idTournament}');
-
+            var idTournament =document.getElementById("idTournament").value;
+            var nameTournament = document.getElementById("nameTournament").value;
+   
             var form = document.getElementById("formAddUser");
             // Clear previous contents of the form
             while (form.hasChildNodes()) {
@@ -33,17 +65,17 @@ block content
             //Add id of tournament
             var input = document.createElement("input");
             input.type = "hidden";
-            input.name = "idtournament";
+            input.name = "idTournament";
             input.value = idTournament;
             form.appendChild(input);
-
+            
             //Add name of tournament
             var input = document.createElement("input");
             input.type = "hidden";
-            input.name = "nametournament";
+            input.name = "nameTournament";
             input.value = nameTournament;
             form.appendChild(input);
-
+            
             //Add number of teams
             var input = document.createElement("input");
             input.type = "hidden";

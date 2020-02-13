@@ -21,6 +21,9 @@ block content
 
     div#divGroups
 
+    input#nameTournament(type="text", name="nameTournament", value=nameTournament, hidden = "hidden")
+    input#idTournament(type="text", name="idTournament", value=idTournament, hidden = "hidden")
+
     script(type='text/javascript').
         window.onload = function(){
             var isGroup = document.getElementById("inputGroup");
@@ -85,6 +88,9 @@ block content
             var button = document.getElementById(id);
             button.style.visibility = "hidden";
 
+            var idTournament =document.getElementById("idTournament").value;
+            var nameTournament = document.getElementById("nameTournament").value;
+
             var input1 = document.getElementById(id + "*team1");
             var input2 = document.getElementById(id + "*team2");
             input1.readOnly = true;
@@ -93,8 +99,8 @@ block content
             var xhr = new XMLHttpRequest();
             var data = JSON.stringify(
                 {
-                    "idTournament": JSON.parse('!{idTournament}'),
-                    "nameTournament": JSON.parse('!{nameTournament}'),
+                    "idTournament": idTournament,
+                    "nameTournament": nameTournament,
                     "id_match": id
                 }
             );
@@ -105,6 +111,9 @@ block content
 
         function changeScore(id){
             var input = document.getElementById(id);
+            var idTournament =document.getElementById("idTournament").value;
+            var nameTournament = document.getElementById("nameTournament").value;
+
             if (input.value >= 0)
             {
                 var xhr = new XMLHttpRequest();
@@ -112,8 +121,8 @@ block content
                     {
                         "id":id,
                         "value":input.value,
-                        "idTournament": JSON.parse('!{idTournament}'),
-                        "nameTournament": JSON.parse('!{nameTournament}')
+                        "idTournament": idTournament,
+                        "nameTournament": nameTournament
                     }
                 );
                 xhr.open('PUT','/results');
