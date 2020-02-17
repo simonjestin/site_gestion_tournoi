@@ -3,10 +3,10 @@ extends layout
 block content
 
     h1= nameTournament   
-    h2  
+    h2
         ul
             il 
-                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Ajouter les concurrents/équipes
+                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Concurrents / Equipes
             il 
                 a(href="/results?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Calendrier / Résultats
             il 
@@ -26,19 +26,22 @@ block content
 
     script(type='text/javascript').
         window.onload = function(){
-            var isGroup = document.getElementById("inputGroup");
-            var isArray = document.getElementById("inputArray");
-            var groups = document.getElementById("divGroups");
+           var isGroup = document.getElementById("inputGroup");
+           var isArray = document.getElementById("inputArray");
+           var groups = document.getElementById("divGroups");
 
-            var matchs = JSON.parse('!{matchs}');
-
+           var matchs = JSON.parse('!{matchs}');
+   
             if (isGroup.checked)
             {
                 var nbGroup = JSON.parse('!{nbGroup}');
 
                 for (var i = 1; i <= nbGroup; i++)
                 {
-                    var div = document.createElement("div");
+                    var div = document.createElement("span");
+                    var container = document.createElement("div");
+                    div.className = "matchs";
+                    container.className = "container";
                     if (i%2 == 0) div.setAttribute("style", "position: relative; left: 0;display: inline-block;");
                     else div.setAttribute("style", "position: relative; right: 0;display: inline-block;");
                     var h3 = document.createElement("h3");
@@ -77,6 +80,8 @@ block content
                             div.appendChild(text3);
                             if (!m.finish) div.appendChild(button);
                             div.appendChild(document.createElement("br"));
+                            div.appendChild(document.createElement("br"));
+                            
                         }
                     });
                     groups.appendChild(div);
