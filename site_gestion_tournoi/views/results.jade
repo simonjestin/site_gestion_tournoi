@@ -11,23 +11,61 @@ block content
                 a(href="/results?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Calendrier / Résultats
             il 
                 a(href="/ranking?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Classements   
+            il 
+                a(href="/") Quitter tournoi
 
-    input#inputGroup(type="radio" name="typetournament",value=1, checked="checked")
+    input#inputGroup(type="radio" name="typetournament",value=1, checked="checked", onchange="changePage();")
     label(for="inputGroup") Groupe
     br
-    input#inputArray(type="radio" name="typetournament",value=2)
-    label(for="inputArray") Tableau
+    input#inputBoard(type="radio" name="typetournament",value=2, onchange="changePage();")
+    label(for="inputBoard") Tableau
     br
 
     div#divGroups
 
-    input#nameTournament(type="text", name="nameTournament", value=nameTournament, hidden = "hidden")
-    input#idTournament(type="text", name="idTournament", value=idTournament, hidden = "hidden")
+    input#nameTournament(type="text" name="nameTournament", value=nameTournament, hidden = "hidden")
+    input#idTournament(type="text" name="idTournament", value=idTournament, hidden = "hidden")
 
     script(type='text/javascript').
+
+        function changePage()
+        {
+            var isGroup = document.getElementById("inputGroup");
+            var isBoard = document.getElementById("inputBoard");
+            var idTournament =document.getElementById("idTournament").value;
+            var nameTournament = document.getElementById("nameTournament").value;
+
+            if (isBoard.checked)
+            {
+                /*var xhr = new XMLHttpRequest();
+                var data = JSON.stringify(
+                {
+                    "idTournament": idTournament,
+                    "nameTournament": nameTournament
+                }
+                );
+                xhr.open('GET','/board?idTournament=' + idTournament + '&nameTournament=' + nameTournament);
+                //xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send();*/
+            }
+            if (isGroup.checked)
+            {
+                /*var xhr = new XMLHttpRequest();
+                var data = JSON.stringify(
+                {
+                    "idTournament": idTournament,
+                    "nameTournament": nameTournament
+                }
+                );
+                xhr.open('GET','/result?idTournament=' + idTournament + '&nameTournament=' + nameTournament);
+                //xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send();*/
+            }
+        }
+
         window.onload = function(){
             var isGroup = document.getElementById("inputGroup");
-            var isArray = document.getElementById("inputArray");
+            var isBoard = document.getElementById("inputBoard");
             var groups = document.getElementById("divGroups");
 
             var matchs = JSON.parse('!{matchs}');
@@ -49,18 +87,21 @@ block content
                         {
                             var inputTeam1 = document.createElement("input");
                             inputTeam1.type = "number";
+                            console.log(m._id);
                             inputTeam1.id = m._id + "*team1";
                             inputTeam1.setAttribute("style", "width: 25px;");
                             inputTeam1.value = m.goal_team1;
                             inputTeam1.onchange = function(){changeScore(inputTeam1.id);};
-                            
+
                             var inputTeam2 = document.createElement("input");
                             inputTeam2.type = "number";
+                            console.log(m._id);
                             inputTeam2.id = m._id + "*team2";
                             inputTeam2.setAttribute("style", "width: 25px;");
                             inputTeam2.value = m.goal_team2;
+                            console.log(inputTeam2.id);
                             inputTeam2.onchange = function(){changeScore(inputTeam2.id);};
-             
+
                             var text1 = document.createTextNode(getTeamName(m.id_team1) + " ");
                             var text2 = document.createTextNode(" - ");
                             var text3 = document.createTextNode(" " + getTeamName(m.id_team2) + "  ");
@@ -95,7 +136,7 @@ block content
             var input2 = document.getElementById(id + "*team2");
             input1.readOnly = true;
             input2.readOnly = true;
-            
+
             var xhr = new XMLHttpRequest();
             var data = JSON.stringify(
                 {
@@ -113,7 +154,8 @@ block content
             var input = document.getElementById(id);
             var idTournament =document.getElementById("idTournament").value;
             var nameTournament = document.getElementById("nameTournament").value;
-
+            
+            console.log(id);
             if (input.value >= 0)
             {
                 var xhr = new XMLHttpRequest();

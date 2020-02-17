@@ -37,13 +37,16 @@ router.post('/', function(req, res) {
                 throw err;
             }
         });
-
+        console.log("toto");
         //--------------------------------------------------
         dbMatchs.find({ "_id": mongodb.ObjectId(req.body.id_match) }, {}, function(e, match) {
+            console.log(match);
             //Get team 1 ----------------------------------
             dbTeams.find({ "_id": match[0].id_team1 }, {}, function(e, team1) {
+                console.log(team1);
                 //Get team 2 ----------------------------------
                 dbTeams.find({ _id: match[0].id_team2 }, {}, function(e, team2) {
+                    console.log(team2);
                     //If team 1 win -------------------------------------
                     if (match[0].goal_team1 > match[0].goal_team2) {
                         query = { "_id": match[0].id_team1 };

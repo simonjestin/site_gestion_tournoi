@@ -6,14 +6,22 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'Generateur' });
 });
 
-/* GET Hello World page. */
-router.get('/helloworld', function(req, res) {
-    res.render('helloworld', { title: 'Hello, Worlds!' })
-});
+router.post('/', function(req, res, next) {
+    var db = req.db;
+    var dbTournament = db.get('tournament');
+    var query;
 
-/* GET Hello World page. */
-router.get('/tournament-tab', function(req, res) {
-    res.render('tornamentTab', { title: 'Ton tournois !' })
+    if (req.body.idTournament != "" && req.body.nameTournament == "") query = { _id: parseInt(req.body.idTournament) };
+    if (req.body.nameTournament != "" && req.body.idTournament == "") query = { name: req.body.nameTournament };
+    if (req.body.nameTournament != "" && req.body.idTournament != "") query = {
+        _id: parseInt(req.body.idTournament),
+        name: req.body.nameTournament
+    };
+
+    dbTournament.find(query, {}, function(e, tournament) {
+        var params = "idTournament=" + tournament[0]._id + "&nameTournament=" + tournament[0].name;
+        res.redirect("/teams?" + params);
+    });
 });
 
 module.exports = router;

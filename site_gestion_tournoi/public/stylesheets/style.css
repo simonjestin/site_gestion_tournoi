@@ -65,8 +65,8 @@ label {
     width: 200px;
     height: 50px;
     color: white;
-    margin-left: 40%;
-    text-align: center;
+    /*margin-left: 40%;
+    text-align: center;*/
 }
 
 .button:hover {
@@ -94,7 +94,7 @@ div.boite {
 
 /*------------------ TOURNAMENT ------------------*/
 
-.torunament_tab {
+.tournament_board {
     width: 100%;
     background: #ff0000;
     display: grid;
@@ -102,14 +102,14 @@ div.boite {
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
-.torunament_tab .item {
+.tournament_board .item {
     border: solid 1px #000;
     background: #0ff000;
     display: flex;
     justify-content: center;
 }
 
-.torunament_tab .item__number {
+.tournament_board .item__number {
     width: 30px;
     display: flex;
     justify-content: center;
@@ -117,7 +117,7 @@ div.boite {
     color: #fff;
 }
 
-.torunament_tab .item__teams {
+.tournament_board .item__teams {
     width: calc(100% - 30px);
     display: flex;
     flex-direction: column;
@@ -126,7 +126,7 @@ div.boite {
     background: #0000ff;
 }
 
-.torunament_tab .item__team {
+.tournament_board .item__team {
     width: 100%;
     display: flex;
     justify-content: flex-start;
