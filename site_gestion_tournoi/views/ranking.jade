@@ -6,7 +6,7 @@ block content
     h2  
         ul
             il 
-                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Ajouter les concurrents/équipes
+                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Concurrents / Equipes
             il 
                 a(href="/results?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Calendrier / Résultats
             il 
@@ -31,6 +31,7 @@ block content
             for (var i = 1; i <= nbGroup; i++)
             {
                 var div = document.createElement("div");
+                div.className = "classement";
                 if (i%2 == 0) div.setAttribute("style", "position: relative; left: 0;display: inline-block;");
                 else div.setAttribute("style", "position: relative; right: 0;display: inline-block;");
                 var h3 = document.createElement("h3");

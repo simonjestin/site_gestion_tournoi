@@ -6,7 +6,7 @@ block content
     h2  
         ul
             il 
-                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Ajouter les concurrents/équipes
+                a(href="/teams?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Concurrents / Equipes
             il 
                 a(href="/results?idTournament=" + idTournament + "&nameTournament=" + nameTournament) Calendrier / Résultats
             il 
@@ -31,23 +31,30 @@ block content
             var isCreated = document.getElementById("isCreated").value;
             var inputNumberOfTeams = document.getElementById("inputNumberOfTeams");
             var form = document.getElementById("formAddUser");
+            var bloc = document.createElement("span");
+            bloc.className = "tableau";
+            var container = document.createElement("div");
             var teams = JSON.parse('!{teams}');
-
+            /*bloc.appendChild(inputNumberOfTeams);*/
             if(isCreated == 1) 
             {
                 inputNumberOfTeams.hidden = "hidden";
                 for (i=0;i<teams.length;i++){
                     // Append a node with a text
-                    form.appendChild(document.createTextNode("Concurrent/équipe " + (i+1) + " =  "));
+                    bloc.appendChild(document.createTextNode("Concurrent/équipe " + (i+1) + " :  "));
                     // Create an <input> element, set its type and name attributes
                     var input = document.createElement("input");
                     input.type = "text";
                     input.name = "teams";
                     input.value = teams[i].name;
                     input.readOnly = true;
-                    form.appendChild(input);
+                    bloc.appendChild(input);
                     // Append a line break 
-                    form.appendChild(document.createElement("br"));
+                    bloc.appendChild(document.createElement("br"));
+                    bloc.appendChild(document.createElement("br"));
+                    container.appendChild(bloc);
+                    form.appendChild(container);
+
                 }
             }
         }
@@ -57,8 +64,12 @@ block content
             var numberOfTeams =document.getElementById("inputNumberOfTeams").value;
             var idTournament =document.getElementById("idTournament").value;
             var nameTournament = document.getElementById("nameTournament").value;
+            var bloc = document.createElement("span");
+            var container = document.createElement("div");
+            container.style.color = "white";
    
             var form = document.getElementById("formAddUser");
+            bloc.className = "tableau";
             // Clear previous contents of the form
             while (form.hasChildNodes()) {
                 form.removeChild(form.lastChild);
@@ -69,42 +80,46 @@ block content
             input.type = "hidden";
             input.name = "idTournament";
             input.value = idTournament;
-            form.appendChild(input);
+            bloc.appendChild(input);
             
             //Add name of tournament
             var input = document.createElement("input");
             input.type = "hidden";
             input.name = "nameTournament";
             input.value = nameTournament;
-            form.appendChild(input);
+            bloc.appendChild(input);
             
             //Add number of teams
             var input = document.createElement("input");
             input.type = "hidden";
             input.name = "nbteams";
             input.value = numberOfTeams;
-            form.appendChild(input);
+            bloc.appendChild(input);
 
             if (numberOfTeams%4 == 0) {
                 for (i=0;i<numberOfTeams;i++){
                     // Append a node with a text
-                    form.appendChild(document.createTextNode("Concurrent/équipe " + (i+1) + " =  "));
+                    bloc.appendChild(document.createTextNode("Concurrent/équipe " + (i+1) + " :  "));
                     // Create an <input> element, set its type and name attributes
                     var input = document.createElement("input");
                     input.type = "text";
                     input.name = "teams";
                     input.required = "required";
-                    form.appendChild(input);
+                    bloc.appendChild(input);
                     // Append a line break 
-                    form.appendChild(document.createElement("br"));
+                    bloc.appendChild(document.createElement("br"));       
+                    bloc.appendChild(document.createElement("br"));                
+                    
                 }
                 var button = document.createElement("button");
                 button.type = "submit";
                 button.innerHTML  = "Valider";
-                form.appendChild(button);
+                bloc.appendChild(button);
             }
             else 
             {
                 alert("Le nombre de concurrent/équipe doit être un multiple de 4");
             }
+                container.appendChild(bloc);
+                form.appendChild(container);
         }
